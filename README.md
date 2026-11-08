@@ -39,7 +39,7 @@
 | A25 | Accela > Switch5 > Omnipresence, Denpa | 514 | /22 |
 | **Total** |  | **2814** | **/19** |
 
-## VLSM
+## VLSM (Helen)
 ### Pembagian IP - VLSM
 
 | Subnet | Network ID | Netmask | Broadcast | Range IP | Ukuran Blok | Offset | Prefix |
@@ -337,4 +337,117 @@ ping -c 3 8.8.8.8
 **Hasil:**
 ![alt text](assets/VLSM/image-8.png)
 
+## CIDR (Jonathan)
+### # Tabel Penggabungan Subnet (VLSM / CIDR Route Summarization)
 
+Topologi berbentuk sedemikian rupa
+
+![alt text](assets/CIDR/cidr-initial.png)
+
+Melalui pengelompokan pada rute, terbentuk zona seperti dibawah
+
+![alt text](assets/CIDR/cidr-groupA.png)
+
+### Pengelompokan I
+| Subnet | Subnet (1) | Netmask (1) | Subnet (2) | Netmask (2) | Netmask Akhir |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| B1 | A17 | /30 | A18 | /26 | /25 |
+| B2 | A24 | /28 | A25 | /22 | /21 |
+| B3 | A21 | /26 | A22 | /23 | /22 |
+| B4 | A3 | /30 | A5 | /26 | /25 |
+| B5 | A4 | /24 | A6 | /24 | /23 |
+| B6 | A15 | /30 | A16 | /27 | /26 |
+| B7 | A13 | /30 | A14 | /29 | /28 |
+| B8 | A19 | /29 | A20 | /22 | /21 |
+| B9 | A11 | /30 | A12 | /26 | /25 |
+| B10 | A9 | /30 | A10 | /25 | /24 |
+| B11 | A7 | /30 | A8 | /23 | /22 |
+
+Sehingga terbentuk pengelompokan berikut
+
+![alt text](assets/CIDR/cidr-groupB.png)
+
+---
+
+### Pengelompokan II
+| Subnet | Subnet (1) | Netmask (1) | Subnet (2) | Netmask (2) | Netmask Akhir |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| C1 | B6 | /26 | B1 | /25 | /24 |
+| C2 | B8 | /21 | B3 | /22 | /20 |
+| C3 | A23 | /29 | B2 | /21 | /20 |
+| C4 | B4 | /25 | B5 | /23 | /22 |
+
+Sehingga terbentuk pengelompokan berikut
+
+![alt text](assets/CIDR/cidr-groupC.png)
+
+---
+
+### Pengelompokan III
+| Subnet | Subnet (1) | Netmask (1) | Subnet (2) | Netmask (2) | Netmask Akhir |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| D1 | B7 | /28 | C1 | /24 | /23 |
+| D2 | A2 | /30 | C4 | /22 | /21 |
+| D3 | C2 | /20 | C3 | /20 | /19 |
+
+Sehingga terbentuk pengelompokan berikut
+
+![alt text](assets/CIDR/cidr-groupD.png)
+
+---
+
+### Pengelompokan IV
+| Subnet | Subnet (1) | Netmask (1) | Subnet (2) | Netmask (2) | Netmask Akhir |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| E1 | B9 | /25 | D1 | /23 | /22 |
+
+### Pengelompokan V
+| Subnet | Subnet (1) | Netmask (1) | Subnet (2) | Netmask (2) | Netmask Akhir |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| G1 | B11 | /22 | F1 | /21 | /20 |
+
+### Pengelompokan VI
+| Subnet | Subnet (1) | Netmask (1) | Subnet (2) | Netmask (2) | Netmask Akhir |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| H1 | D2 | /21 | G1 | /20 | /29 |
+
+Sehingga terbentuk pengelompokan berikut
+
+![alt text](assets/CIDR/cidr-groupE-G.png)
+
+---
+
+### Tabel Detail IP
+
+| Subnet | Network ID | Netmask | Broadcast | Range IP |
+| :---: | :---: | :---: | :---: | :---: |
+| A1 | 10.80.64.0 | 255.255.255.128 | 10.80.64.127 | 10.80.64.1 – 10.80.64.126 |
+| A2 | 10.80.20.0 | 255.255.255.252 | 10.80.20.3 | 10.80.20.1 – 10.80.20.2 |
+| A3 | 10.80.18.64 | 255.255.255.252 | 10.80.18.67 | 10.80.18.65 – 10.80.18.66 |
+| A4 | 10.80.16.0 | 255.255.255.0 | 10.80.16.255 | 10.80.16.1 – 10.80.16.254 |
+| A5 | 10.80.18.0 | 255.255.255.192 | 10.80.18.63 | 10.80.18.1 – 10.80.18.62 |
+| A6 | 10.80.17.0 | 255.255.255.0 | 10.80.17.255 | 10.80.17.1 – 10.80.17.254 |
+| A7 | 10.80.10.0 | 255.255.255.252 | 10.80.10.3 | 10.80.10.1 – 10.80.10.2 |
+| A8 | 10.80.8.0 | 255.255.254.0 | 10.80.9.255 | 10.80.8.1 – 10.80.9.254 |
+| A9 | 10.80.4.128 | 255.255.255.252 | 10.80.4.131 | 10.80.4.129 – 10.80.4.130 |
+| A10 | 10.80.4.0 | 255.255.255.128 | 10.80.4.127 | 10.80.4.1 – 10.80.4.126 |
+| A11 | 10.80.2.64 | 255.255.255.252 | 10.80.2.67 | 10.80.2.65 – 10.80.2.66 |
+| A12 | 10.80.2.0 | 255.255.255.192 | 10.80.2.63 | 10.80.2.1 – 10.80.2.62 |
+| A13 | 10.80.1.8 | 255.255.255.252 | 10.80.1.11 | 10.80.1.9 – 10.80.1.10 |
+| A14 | 10.80.1.0 | 255.255.255.248 | 10.80.1.7 | 10.80.1.1 – 10.80.1.6 |
+| A15 | 10.80.0.160 | 255.255.255.252 | 10.80.0.163 | 10.80.0.161 – 10.80.0.162 |
+| A16 | 10.80.0.128 | 255.255.255.224 | 10.80.0.159 | 10.80.0.129 – 10.80.0.158 |
+| A17 | 10.80.0.64 | 255.255.255.252 | 10.80.0.67 | 10.80.0.65 – 10.80.0.66 |
+| A18 | 10.80.0.0 | 255.255.255.192 | 10.80.0.63 | 10.80.0.1 – 10.80.0.62 |
+| A19 | 10.80.36.0 | 255.255.255.248 | 10.80.36.7 | 10.80.36.1 – 10.80.36.6 |
+| A20 | 10.80.32.0 | 255.255.252.0 | 10.80.35.255 | 10.80.32.1 – 10.80.35.254 |
+| A21 | 10.80.42.0 | 255.255.255.192 | 10.80.42.63 | 10.80.42.1 – 10.80.42.62 |
+| A22 | 10.80.40.0 | 255.255.254.0 | 10.80.41.255 | 10.80.40.1 – 10.80.41.254 |
+| A23 | 10.80.56.0 | 255.255.255.248 | 10.80.56.7 | 10.80.56.1 – 10.80.56.6 |
+| A24 | 10.80.52.0 | 255.255.255.252 | 10.80.52.3 | 10.80.52.1 – 10.80.52.2 |
+| A25 | 10.80.48.0 | 255.255.252.0 | 10.80.51.255 | 10.80.48.1 – 10.80.51.254 |
+
+### Testing
+Untuk testing sendiri, memakai fitur PDU (Pengiriman paket berbasis interface interaktif) dari router tertinggi (Cyberia) ke semua endpoint. Jika masing-masing endpoint bisa menerima dan membalas paket (ping), maka itu adalah bukti keterhubungan satu device dengan yang lain.
+
+![alt text](assets/CIDR/pdu-test.png)
